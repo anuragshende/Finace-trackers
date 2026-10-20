@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finest — Expense Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+
+  <!-- Authentication -->
+  <main id="authPage" class="auth-page">
+    <section class="auth-brand">
+      <div class="brand"><span class="brand-icon">F</span> finest<span class="dot">.</span></div>
+      <div class="brand-copy">
+        <span class="eyebrow">YOUR MONEY, YOUR CONTROL</span>
+        <h1>Make your money<br>work <span>smarter.</span></h1>
+        <p>Track expenses, understand your habits, and build a better financial future.</p>
+        <div class="mini-stats">
+          <div><strong>Track</strong><span>Every transaction</span></div>
+          <div><strong>Understand</strong><span>Your spending</span></div>
+        </div>
+      </div>
+      <p class="copyright">© 2026 Finest Finance</p>
+    </section>
+
+    <section class="auth-content">
+      <div class="auth-top">
+        <span>Personal finance dashboard</span>
+        <button id="authThemeBtn" class="icon-btn" aria-label="Toggle theme">☾</button>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-symbol">✦</div>
+
+        <div id="loginForm">
+          <span class="eyebrow">WELCOME BACK</span>
+          <h2>Sign in to your account</h2>
+          <p class="muted">Your financial journey continues here.</p>
+          <form id="login" class="form">
+            <label for="loginEmail">Email address</label>
+            <input id="loginEmail" type="email" placeholder="you@example.com" required />
+
+            <label for="loginPassword">Password</label>
+            <input id="loginPassword" type="password" placeholder="Enter your password" required />
+
+            <button class="primary-btn" type="submit">Sign in <span>→</span></button>
+          </form>
+          <p class="switch-text">Don't have an account? <button id="showRegister">Create account</button></p>
+        </div>
+
+        <div id="registerForm" class="hidden">
+          <span class="eyebrow">GET STARTED FOR FREE</span>
+          <h2>Create your account</h2>
+          <p class="muted">Start taking control of your money.</p>
+          <form id="register" class="form">
+            <label for="registerName">Full name</label>
+            <input id="registerName" type="text" placeholder="Your name" required minlength="2" />
+
+            <label for="registerEmail">Email address</label>
+            <input id="registerEmail" type="email" placeholder="you@example.com" required />
+
+            <label for="registerPassword">Password</label>
+            <input id="registerPassword" type="password" placeholder="At least 6 characters" required minlength="6" />
+
+            <button class="primary-btn" type="submit">Create account <span>→</span></button>
+          </form>
+          <p class="switch-text">Already registered? <button id="showLogin">Sign in</button></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="app hidden">
+    <aside class="sidebar">
+      <a href="#" class="brand"><span class="brand-icon">F</span> finest<span class="dot">.</span></a>
+
+      <p class="nav-label">WORKSPACE</p>
+      <button class="nav-item active" data-section="overview"><span>▦</span> Overview</button>
+      <button class="nav-item" data-section="transactions"><span>⇄</span> Transactions</button>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-tip">
+          <span class="tip-icon">✦</span>
+          <strong>Small steps matter.</strong>
+          <p>Every saved rupee brings you closer to your goals.</p>
+        </div>
+        <button id="logoutBtn" class="nav-item logout"><span>↪</span> Log out</button>
+        <div class="profile">
+          <div id="avatar" class="avatar">U</div>
+          <div class="profile-info"><strong id="profileName">User</strong><span id="profileEmail">user@email.com</span></div>
+          <span class="online-dot"></span>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="muted small">PERSONAL FINANCE</p>
+          <h2 id="pageTitle">Overview</h2>
+        </div>
+        <div class="top-actions">
+          <span id="todayDate" class="date-label"></span>
+          <button id="themeBtn" class="icon-btn" aria-label="Toggle theme">☾</button>
+          <button id="headerLogout" class="outline-btn">Log out ↗</button>
+        </div>
+      </header>
+
+      <section id="overviewSection">
+        <div class="welcome-row">
+          <div>
+            <h2>Welcome back, <span id="welcomeName">there</span> 👋</h2>
+            <p class="muted">Here's what's happening with your money.</p>
+          </div>
+          <button id="addTopBtn" class="primary-btn compact">＋ Add transaction</button>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card balance-card">
+            <div class="stat-head"><span>Total balance</span><span class="stat-icon">◈</span></div>
+            <h2 id="totalBalance">₹0.00</h2>
+            <p>Income minus expenses</p>
+            <div class="balance-decoration">₹</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-head"><span>Total income</span><span class="stat-icon income-icon">↙</span></div>
+            <h2 id="totalIncome">₹0.00</h2>
+            <p class="muted">Money received</p>
+            <span class="stat-caption positive">＋ Earnings</span>
+          </article>
+          <article class="stat-card">
+            <div class="stat-head"><span>Total expenses</span><span class="stat-icon expense-icon">↗</span></div>
+            <h2 id="totalExpense">₹0.00</h2>
+            <p class="muted">Money spent</p>
+            <span class="stat-caption negative">− Spending</span>
+          </article>
+        </div>
+
+        <div class="content-grid">
+          <article class="panel chart-panel">
+            <div class="panel-head">
+              <div><h3>Income vs expenses</h3><p class="muted">Your overall financial breakdown</p></div>
+            </div>
+            <div class="chart-wrap"><canvas id="financeChart"></canvas></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head"><div><h3>Quick insights</h3><p class="muted">Your money at a glance</p></div><span>✧</span></div>
+            <div class="insight-row"><span class="insight-symbol green">↙</span><div><span class="muted">Savings rate</span><h3 id="savingsRate">0%</h3></div></div>
+            <div class="insight-row"><span class="insight-symbol purple">⇄</span><div><span class="muted">Transactions</span><h3 id="transactionCount">0</h3></div></div>
+            <div class="insight-row"><span class="insight-symbol orange">◎</span><div><span class="muted">Top expense category</span><h3 id="topCategory">None yet</h3></div></div>
+          </article>
+        </div>
+
+        <article class="panel transactions-panel">
+          <div class="panel-head">
+            <div><h3>Recent transactions</h3><p class="muted">Your latest money movements</p></div>
+            <button id="viewAllBtn" class="text-btn">View all →</button>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>TRANSACTION</th><th>CATEGORY</th><th>DATE</th><th>TYPE</th><th class="right">AMOUNT</th><th></th></tr></thead>
+              <tbody id="recentTable"></tbody>
+            </table>
+          </div>
+          <div id="recentEmpty" class="empty-state hidden"><span>↗</span><h3>No transactions yet</h3><p>Add your first transaction to see your finances here.</p></div>
+        </article>
+      </section>
+
+      <section id="transactionsSection" class="hidden">
+        <div class="welcome-row">
+          <div><h2>All transactions</h2><p class="muted">Manage your income and expenses.</p></div>
+          <button id="addAllBtn" class="primary-btn compact">＋ Add transaction</button>
+        </div>
+        <article class="panel">
+          <div class="filter-row">
+            <input id="searchTransaction" type="search" placeholder="⌕ Search transactions..." />
+            <select id="typeFilter"><option value="all">All types</option><option value="income">Income</option><option value="expense">Expense</option></select>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>TRANSACTION</th><th>CATEGORY</th><th>DATE</th><th>TYPE</th><th class="right">AMOUNT</th><th></th></tr></thead>
+              <tbody id="allTable"></tbody>
+            </table>
+          </div>
+          <div id="allEmpty" class="empty-state hidden"><span>⌕</span><h3>No matching transactions</h3><p>Try another search or add a transaction.</p></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <!-- Add transaction modal -->
+  <div id="transactionModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="panel-head">
+        <div><span class="eyebrow">YOUR MONEY</span><h2>Add transaction</h2></div>
+        <button id="closeModal" class="icon-btn" aria-label="Close">✕</button>
+      </div>
+      <form id="transactionForm" class="form">
+        <label for="transactionTitle">Transaction name</label>
+        <input id="transactionTitle" type="text" placeholder="e.g. Monthly salary" required maxlength="70" />
+        <div class="form-grid">
+          <div><label for="transactionType">Type</label><select id="transactionType"><option value="expense">Expense</option><option value="income">Income</option></select></div>
+          <div><label for="transactionAmount">Amount (₹)</label><input id="transactionAmount" type="number" placeholder="0.00" min="0.01" max="1000000000" step="0.01" required /></div>
+        </div>
+        <div class="form-grid">
+          <div><label for="transactionCategory">Category</label>
+            <select id="transactionCategory">
+              <option>Food</option><option>Transport</option><option>Shopping</option><option>Bills</option><option>Health</option><option>Education</option><option>Salary</option><option>Freelance</option><option>Investment</option><option>Other</option>
+            </select>
+          </div>
+          <div><label for="transactionDate">Date</label><input id="transactionDate" type="date" required /></div>
+        </div>
+        <button type="submit" class="primary-btn">Save transaction <span>→</span></button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
